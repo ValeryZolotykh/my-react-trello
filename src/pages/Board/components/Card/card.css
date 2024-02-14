@@ -1,0 +1,35 @@
+.card__content {
+  background-color: var(--color_component);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  cursor: grabbing;
+}
+
+.card__title {
+  color: black;
+  margin: 0 0 0 5px;
+  font-size: 20px;
+  font-weight: bold;
+  word-break: break-all;
+}
+
+.card__control-panel {
+  display: flex;
+}
+
+.btn__edit-card {
+  border-radius: 0;
+  width: 30px;
+  background-color: rgba(255, 255, 255, 0);
+  padding-right: 0;
+}
+
+.btn__del-card {
+  border-radius: 0;
+  width: 30px;
+  background-color: rgba(4, 60, 110, 0.071);
+  color: black;
+  height: 100%;
+}

@@ -1,0 +1,87 @@
+::-webkit-scrollbar {
+  width: 0;
+}
+
+.btn__back-to-home {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.178);
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  border-radius: 5px;
+}
+
+.board__name {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.board__name::after {
+  content: url("../../../../assets/img/edit-pen.png");
+  padding-left: 10px;
+}
+
+.board__name:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: 0.5s;
+}
+
+.board__edit-input {
+  margin-top: 40px;
+  padding: 5px;
+}
+
+.btn__del-board {
+  background-color: var(--color_delete);
+  height: 30px;
+  width: 200px;
+  border-radius: 5px;
+  position: absolute;
+  right: 5px;
+  top: 10px;
+}
+
+.board__body {
+  display: flex;
+  overflow-x: scroll;
+  position: fixed;
+  top: 140px;
+  left: 0;
+  right: 0;
+}
+
+.lists__wrapper {
+  display: flex;
+}
+
+.btn__add-list {
+  height: 50px;
+  min-width: 250px;
+}
+
+.board__form-create-list {
+  background-color: rgba(240, 248, 255, 0.244);
+  width: 260px;
+  height: 180px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+}
+
+.btn__close-creating-list {
+  width: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 4px;
+}
+
+.btn__create-list {
+  background-color: var(--color_creating);
+  border-radius: 30px;
+}

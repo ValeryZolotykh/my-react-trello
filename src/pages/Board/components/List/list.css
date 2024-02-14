@@ -1,0 +1,41 @@
+.list__wrapper{
+    border: 2px solid var(--color_border);
+    margin-right: 50px;
+    width: 250px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 25px;
+    height: fit-content;
+}
+
+.btn__del-list{
+    background-color: var(--color_delete);
+    height: 18px;
+    width: 20px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: smaller;
+}
+
+.list__title{
+    word-wrap: break-word;
+    width: 250px;
+    margin-top: 0;
+}
+
+.list__title::after{
+    content:url("../../../../assets/img/edit-pen.png");
+    padding-left: 10px;
+}
+
+.list__title:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    transition: 0.5s;
+}
+
+.btn__add-card{
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
