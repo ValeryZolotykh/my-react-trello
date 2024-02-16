@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Board from "./pages/Board/components/Board/Board";
 import Home from "./pages/Home/Home";
 import { ToastContainer } from "react-toastify";
@@ -16,7 +15,7 @@ function App() {
       />
       <Routes>
         <Route path="/my-react-trello" element={<Home />} />
-        <Route path="board/:board_id" element={<Board />}>
+        <Route path="/my-react-trello/board/:board_id" element={<Board />}>
           <Route path="card/:card_id" element={<ModalWindow />} />
         </Route>
       </Routes>
