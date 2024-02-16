@@ -14,11 +14,10 @@ function App() {
         theme={"dark"} // Тема уведомлений
       />
       <Routes>
-        <Route path="/my-react-trello" element={<Home />} >
-          <Route path="board/:board_id" element={<Board />}>
+        <Route path="/my-react-trello" element={<Home />} />
+          <Route path="/my-react-trello/board/:board_id" element={<Board />}>
             <Route path="card/:card_id" element={<ModalWindow />} />
           </Route>
-        </Route>
       </Routes>
     </Router>
   );
