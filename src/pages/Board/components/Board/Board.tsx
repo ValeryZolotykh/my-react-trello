@@ -183,7 +183,7 @@ const Board: React.FC<BoardProps> = ({ isModalOpen, dispatch }) => {
    * Redirect to the home page.
    */
   function linkToHomePage() {
-    navigate("/");
+    navigate("/my-react-trello");
   }
 
   return (
