@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Board from "./pages/Board/components/Board/Board";
 import Home from "./pages/Home/Home";
 import { ToastContainer } from "react-toastify";
