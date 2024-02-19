@@ -57,7 +57,7 @@ type Action =
   | SetModalAction
   | UpdateCardAction;
 
-const modalReducer = (state = initialState, action: Action) => {
+const modalWindowReducer = (state = initialState, action: Action) => {
   // Switch statement to handle different action types and update state accordingly
   switch (action.type) {
     case OPEN_MODAL:
@@ -91,4 +91,4 @@ const modalReducer = (state = initialState, action: Action) => {
   }
 };
 
-export default modalReducer;
+export default modalWindowReducer;
