@@ -7,6 +7,7 @@ interface AppState {
 interface StartRequestAction {
   type: "START_REQUEST";
 }
+
 interface EndRequestAction {
   type: "END_REQUEST";
 }
