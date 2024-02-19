@@ -155,7 +155,7 @@ export default function Card({
   /**
    * Handles the event when a draggable element leaves a drop zone.
    *
-   * @param event
+   * @param event The drag event that triggered the method.
    */
   function onDragLeave(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault(); // Prevent the default behavior of the drag event, which may interfere with the custom logic
@@ -223,7 +223,7 @@ export default function Card({
         }
       } catch (error) {
         toast.error("Error! Failed to create card");
-        console.error("Ошибка при запросе ", error);
+        console.error("Error during request:", error); // Log the error to the console for debugging purposes
       }
     };
     fetchData();
@@ -292,6 +292,7 @@ export default function Card({
       try {
         // Send a PUT request to update positions in the list
         await api.put("board/" + board_id + "/card/", requestData);
+        toast.success("Card successfully moved");
         updateBoard(); // Retrieve the updated board data after updating the positions
       } catch (error) {
         console.error("Error during request:", error); // Log the error to the console for debugging purposes

@@ -1,12 +1,12 @@
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import "./list.css";
 import { ICard } from "../../../../common/interfaces/Card";
 import Card from "../Card/Card";
-import "./list.css";
-import api from "../../../../api/request";
-import { useParams } from "react-router-dom";
-import React, { useState } from "react";
 import ValidatedInput from "../../../../components/validated-input";
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import api from "../../../../api/request";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IListProps {
   id: number;
@@ -19,22 +19,42 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
   const [editingList, setEditingList] = useState(false);
   const [creatingCard, setCreatingCard] = useState(false);
   const { board_id } = useParams();
+
   const cardsElements = cards.map((card) => (
-    <Card id={card.id} title={card.title} position={card.position} description={card.description} idList={id} cardsList={cards} updateBoard={updateBoard}/>
+    <Card
+      id={card.id}
+      title={card.title}
+      position={card.position}
+      description={card.description}
+      idList={id}
+      cardsList={cards}
+      updateBoard={updateBoard}
+    />
   ));
 
-  function editList(inputValue: string | null) {
-    if (title !== inputValue) {
+  /**
+   * Editing the name of list by press enter or lost focus of input.
+   * If the new value is not equal to the previous value ans isn't not null, then sending put-request
+   * and updating current board.
+   *
+   * @param newTitle new title of list.
+   */
+  function editList(newTitle: string | null) {
+    //If newTitle equals null, user enter invalid name
+    if (newTitle == null) {
+      toast.error("Error! Lisr name is invalid");
+    } else if (title !== newTitle) {
       const fetchData = async () => {
         try {
+          // Send a PUT request to update the list name
           await api.put("board/" + board_id + "/list/" + id, {
-            title: inputValue,
+            title: newTitle,
           });
-          toast.success("List name successfully changed");
-          updateBoard();
+          updateBoard(); // Update the board state with the new data after successful editing
+          toast.success("List name successfully changed"); // Display a success message
         } catch (error) {
-          toast.error("Error! List name hasn't been changed");
-          console.error("Ошибка при запросе ", error);
+          toast.error("Error! List name hasn't been changed"); // If an error occurs during the editing
+          console.error("Error during request: ", error); // Log the error to the console for debugging purposes
         }
       };
       fetchData();
@@ -42,65 +62,87 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
     setEditingList(false);
   }
 
-  function deleteList() {
-    const fetchData = async () => {
-      try {
-        await api.delete("board/" + board_id + "/list/" + id);
-        toast.success("List successfully deleted");
-        updateBoard();
-      } catch (error) {
-        toast.error("Error! Failed to delete list");
-        console.error("Ошибка при запросе ", error);
-      }
-    };
-    fetchData();
+  /**
+   * Deleting of the current list and updating current board.
+   */
+  async function deleteList() {
+    try {
+      // Send a DELETE request to delete the list
+      await api.delete("board/" + board_id + "/list/" + id);
+      toast.success("List successfully deleted"); // If the deletion is successful, show a success message
+      updateBoard(); // Update the board state with the new data after successful deleting
+    } catch (error) {
+      toast.error("Error! Failed to delete list"); // If an error occurs during the deletion process
+      console.error("Error during request: ", error); // Log the error to the console for debugging purposes
+    }
   }
 
-  function createCard(inputValue: string | null) {
+  /**
+   * Creating the new card and updating current board.
+   *
+   * @param titleCard title of the new card.
+   */
+  function createCard(titleCard: string | null) {
     setCreatingCard(false);
-    if(inputValue===null) {
+    //If titleCard equals null, user enter invalid name
+    if (titleCard === null) {
       toast.error("Error! Failed to create card");
-    }else{
+    } else {
+      //Define the correct position for new card
       const lastCard = cards[cards?.length - 1];
       let position = lastCard === undefined ? 0 : lastCard.position;
 
       const fetchData = async () => {
         try {
+          // Send a POST request to create a new card
           await api.post("board/" + board_id + "/card/", {
-            title: inputValue,
+            title: titleCard,
             list_id: id,
             position: ++position,
           });
-          updateBoard();
-          toast.success("Card successfully created");
+          updateBoard(); // Retrieve the updated board data after creating the list
+          toast.success("Card successfully created"); // Display a success toast message
         } catch (error) {
-          toast.error("Error! Failed to create card");
-          console.error("Ошибка при запросе ", error);
+          toast.error("Error! Failed to create card"); // If an error occurs during the creation process
+          console.error("Error during request:", error); // Log the error to the console for debugging purposes
         }
       };
-      fetchData();}
+      fetchData();
+    }
   }
 
+  /** Start LOGIC OF DRAG-N-DROP (Case for empty list) */
+
+  /**
+   * Creating a drop-zone slot in empty list.
+   * 
+   * @param event The drag event that triggered the method.
+   */
   function dragEnter(event: React.DragEvent<HTMLDivElement>) {
-    // console.log("Empty list")
     event.preventDefault(); // Prevent the default behavior of the drag event, which may interfere with the custom logic
+
     // If list is empty, then create the drop-zone
-    if (!cards.length || cards.length===0) {
+    if (!cards.length || cards.length === 0) {
       const cardContainer = event.target as HTMLElement;
-      const slots = cardContainer?.querySelectorAll('.drop');
+      const slots = cardContainer?.querySelectorAll(".drop");
       if (!slots?.length) {
         const slot = createDropZone();
-        cardContainer.lastElementChild?.insertAdjacentElement('beforebegin', slot);
+        cardContainer.lastElementChild?.insertAdjacentElement(
+          "beforebegin",
+          slot
+        );
       }
     }
   }
+
   /**
    * Creates a drop zone element and returns it. The drop zone is a div element with specified styles and a 'drop' class.
    * It is used to handle drag-and-drop events for elements that can be dropped onto it.
+   *
    * @returns {HTMLElement} The created drop zone element.
    */
   function createDropZone(): HTMLElement {
-    const slot = document.createElement('div');
+    const slot = document.createElement("div");
     slot.style.cssText = `
     width: auto;
     height: 30px;
@@ -111,14 +153,19 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
     margin-top: 10px;`;
     /* Prevent the default behavior when an element is dragged over the drop zone.
     This is necessary to allow dropping elements onto the zone.*/
-    slot.addEventListener('dragover', (event) => {
+    slot.addEventListener("dragover", (event) => {
       event.preventDefault();
     });
-    slot.addEventListener('drop', onDragDrop);
-    slot.classList.add('drop');
+    slot.addEventListener("drop", onDragDrop);
+    slot.classList.add("drop");
     return slot;
   }
 
+  /**
+   * Handles the event when a draggable element leaves a drop zone.
+   * 
+   * @param event The drag event that triggered the method.
+   */
   function onDragLeave(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     const target = event.target as HTMLElement;
@@ -126,35 +173,46 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
 
     // Check if the mouse pointer is outside the boundaries of the container
     if (
-        event.clientX < containerCoordinate.left ||
-        event.clientX > containerCoordinate.right ||
-        event.clientY < containerCoordinate.top ||
-        event.clientY > containerCoordinate.bottom - 5
+      event.clientX < containerCoordinate.left ||
+      event.clientX > containerCoordinate.right ||
+      event.clientY < containerCoordinate.top ||
+      event.clientY > containerCoordinate.bottom - 5
     ) {
       // Remove all drop slots within the card container
-      const slots = target!.querySelectorAll('.drop');
+      const slots = target!.querySelectorAll(".drop");
       slots.forEach((slot: any) => slot.remove());
     }
   }
 
+  /**
+   *  This method handles the logic when a drag event triggers the drop action for a card.
+   * 
+   * @param event The drag event that triggered the method.
+   */
   async function onDragDrop(event: DragEvent): Promise<void> {
-    event.preventDefault();
-    // console.log("YA TOLKO V PUSTOM LISTE MUST BE");
-    const dataDrag = JSON.parse(event.dataTransfer!.getData('application/json'));
+    event.preventDefault(); // Prevent the default behavior of the drag event, which may interfere with the custom logic
+
+     // Extract data about the dragged card from the drag event
+    const dataDrag = JSON.parse(
+      event.dataTransfer!.getData("application/json")
+    );
+
     try {
-      await api.put("board/" + board_id + "/card/", [{
-        id: dataDrag.idCard,
-        position: 1,
-        list_id: id,
-      }]);
+      await api.put("board/" + board_id + "/card/", [
+        {
+          id: dataDrag.idCard,
+          position: 1,
+          list_id: id,
+        },
+      ]);
       toast.success("Card successfully moved");
     } catch (error) {
       toast.error("Error! Failed to move card");
-      console.error("Ошибка при запросе ", error);
+       console.error("Error during request:", error); // Log the error to the console for debugging purposes
+      
     }
 
-
-    const requestData: any[] = [ ];
+    const requestData: any[] = [];
     for (const card of dataDrag.oldList.slice(dataDrag.position)) {
       requestData.push({
         id: card.id,
@@ -164,10 +222,10 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
     }
     const fetchData = async () => {
       try {
-        await api.put("board/" + board_id + "/card/" , requestData);
+        await api.put("board/" + board_id + "/card/", requestData);
         updateBoard();
       } catch (error) {
-        console.error("Ошибка при запросе ", error);
+        console.error("Error during request:", error); // Log the error to the console for debugging purposes
       }
     };
     fetchData();
@@ -175,8 +233,14 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
     dropZone?.remove();
   }
 
-    return (
-    <div className="list__wrapper" onDragEnter={cards.length === 0 ? dragEnter : undefined}  onDragLeave={cards.length === 0 ? onDragLeave : undefined}>
+  /** Finish LOGIC OF DRAG-N-DROP */
+
+  return (
+    <div
+      className="list__wrapper"
+      onDragEnter={cards.length === 0 ? dragEnter : undefined}
+      onDragLeave={cards.length === 0 ? onDragLeave : undefined}
+    >
       <button className="btn btn__del-list" onClick={deleteList}>
         X
       </button>
@@ -189,10 +253,10 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
         <ValidatedInput
           previousValue={title}
           onEnter={(inputValue: string) => editList(inputValue)}
-          onLostFocus={(inputValue:string | null) => editList(inputValue)}
+          onLostFocus={(inputValue: string | null) => editList(inputValue)}
         ></ValidatedInput>
       )}
-      <div className="cards__wrapper" >{cardsElements}</div>
+      <div className="cards__wrapper">{cardsElements}</div>
 
       {creatingCard && (
         <ValidatedInput
