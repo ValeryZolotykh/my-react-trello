@@ -1,30 +1,14 @@
-import {combineReducers, createStore} from 'redux';
-// import rootReducer from '../reducers/reducers'; //Редюсер в Redux отвечает за обновление состояния в ответ на действия (actions).
+import {createStore} from 'redux';
 import rootReducer from "../reducers/rootReducer";
-/** Здесь создается Redux store с использованием функции createStore. Эта функция принимает ваш корневой редюсер
-    как аргумент, чтобы определить, как обрабатывать действия и обновлять состояние.*/
 
+// Create a Redux store using createStore with a root reducer, defining rules for updating data.
 const store = createStore(rootReducer);
 
 export default store;
 
-/** Redux Store - это централизованное место, где хранится состояние вашего приложения.
- *  Весь стейт приложения хранится в одном объекте, что упрощает управление состоянием и его обновление.
- *
- *  В Redux мы используем специальное место, называемое "хранилищем" (store), чтобы хранить все данные нашего
- *  приложения.
- *
- *  Файл store.js отвечает за создание этого хранилища и настройку его работы.
- *  В этом файле мы говорим Redux: "Эй, создай новое хранилище для моего приложения
- *  с этими правилами для обновления данных".
- *
- *  В этом файле мы используем функцию createStore из Redux. Мы передаем ей особый "редюсер" (rootReducer),
- *  который определяет, как данные в хранилище будут изменяться в ответ на действия.
- *
- *  Когда что-то происходит в приложении (например, пользователь кликает на кнопку), мы отправляем "действие" в хранилище.
- *  Хранилище передает это действие корневому редюсеру, который обновляет данные в соответствии с этим действием.
- *
- *  Файл store.js экспортирует созданное хранилище, чтобы другие части приложения могли его использовать.
- *  Например, когда мы хотим узнать текущее состояние приложения или отправить новое действие, мы импортируем
- *  это хранилище и используем его.
+/*
+ * Redux Store: Centralized place to store application state in a single object.
+ * store.js creates and configures the store using createStore and a root reducer.
+ * Actions update the state based on rules defined in the root reducer.
+ * Exported store is used to access and update the application state.
  */

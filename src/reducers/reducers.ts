@@ -1,77 +1,51 @@
-/** Это интерфейс, который определяет структуру состояния вашего Redux-стора.
-  В данном случае, в состоянии есть только одно поле requestsInProgress, которое отслеживает
-  количество активных запросов.*/
+/** Defines the structure of the Redux store's state. */
 interface AppState {
-    requestsInProgress: number;
+  requestsInProgress: number;
 }
 
-/** Это интерфейсы, описывающие формат действий (actions), которые могут быть отправлены в редюсер.
- Они содержат только свойство type, которое указывает на тип действия.*/
+/** Describes the format of actions that can be dispatched to the reducer. */
 interface StartRequestAction {
-    type: 'START_REQUEST';
+  type: "START_REQUEST";
 }
 interface EndRequestAction {
-    type: 'END_REQUEST';
+  type: "END_REQUEST";
 }
 
-/** Здесь создается объединение типов (type union), где переменная Action может иметь тип StartRequestAction или
- * EndRequestAction. Это используется для того, чтобы уточнить, какие действия могут быть обработаны в редюсере.*/
+/** Union type for actions that can be handled in the reducer. */
 type Action = StartRequestAction | EndRequestAction;
 
-/** Здесь определено начальное состояние Redux-стора. В данном случае,
- * начальное количество активных запросов установлено в 0. */
+/** Initial state of the Redux store. */
 const initialState: AppState = {
-    requestsInProgress: 0,
+  requestsInProgress: 0,
 };
 
-/**
- *  Это функция-редюсер, которая принимает текущее состояние и действие, а затем возвращает новое состояние.
- *  Внутри редюсера выполняются различные действия в зависимости от типа полученного действия.
- *  Например, если действие типа 'START_REQUEST', увеличивается счетчик requestsInProgress,
- *  и если действие типа 'END_REQUEST', счетчик уменьшается.
- * */
-const progressBarReducer = (state: AppState = initialState, action: Action): AppState => {
-    switch (action.type) {
-        case 'START_REQUEST':
-            return {
-                 /** Это оператор spread, который копирует все поля из объекта state в новый объект.
-                  Это используется для того, чтобы сделать копию текущего состояния (например, объекта) в
-                  Redux-редюсере. Когда вы изменяете состояние, вместо того чтобы изменять оригинальный объект напрямую,
-                  создается новый объект с теми же свойствами. Redux рекомендует использовать иммутабельность данных,
-                  что означает, что мы не изменяем данные напрямую, чтобы избежать непредвиденных эффектов. Создание
-                  копии с помощью ...state гарантирует, что остальные данные в объекте сохраняются, и мы изменяем только
-                  то, что нужно.*/
-                ...state,
-                requestsInProgress: state.requestsInProgress + 1,
-            };
-        case 'END_REQUEST':
-            return {
-                ...state,
-                requestsInProgress: state.requestsInProgress - 1,
-            };
-        default:
-            return state;
-    }
+/** Reducer function to update the state based on the action type. */
+const progressBarReducer = (
+  state: AppState = initialState,
+  action: Action,
+): AppState => {
+  switch (action.type) {
+    case "START_REQUEST":
+      return {
+        ...state,
+        requestsInProgress: state.requestsInProgress + 1,
+      };
+    case "END_REQUEST":
+      return {
+        ...state,
+        requestsInProgress: state.requestsInProgress - 1,
+      };
+    default:
+      return state;
+  }
 };
 
-/** Редюсер экспортируется, чтобы его можно было использовать в других частях вашего приложения,
- * особенно при настройке Redux store.*/
 export default progressBarReducer;
 
-/**
-*  Редюсер в Redux - это простая функция, которая занимается обновлением состояния вашего приложения.
-*  Она принимает два аргумента: текущее состояние и действие, которое нужно выполнить.
-*  В зависимости от типа действия, редюсер должен вернуть новое состояние или текущее состояние.
-*
-*
-* Принцип работы Redux:
-* 1)Состояние (State): В приложении есть какое-то состояние. Например, это может быть количество
-*   товаров в корзине, текущая страница, или что-то еще.
-* 2)Действия (Actions): Когда что-то происходит в приложении (например, пользователь добавляет товар в корзину),
-*   создается "действие". Действие - это просто объект, который описывает, что произошло.
-* 3)Редюсер (Reducer): Редюсер - это функция, которая принимает текущее состояние и действие, а затем
-*   возвращает новое состояние. Он определяет, как изменится состояние в ответ на действие.
-*
-* Редюсеры в Redux должны быть чистыми функциями без побочных эффектов. Это позволяет Redux эффективно
-* отслеживать историю состояния вашего приложения и управлять ей.
-* */
+/*
+ *  Redux Working Principle:
+ * 1) State: Application has some state, e.g., items in the cart.
+ * 2) Actions: When something happens (e.g., user action), an "action" is created.
+ * 3) Reducer: Function that takes current state and action, returning the new state.
+ * Reducers should be pure functions for efficient state management.
+ * */

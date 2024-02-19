@@ -34,7 +34,7 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
 
   /**
    * Editing the name of list by press enter or lost focus of input.
-   * If the new value is not equal to the previous value ans isn't not null, then sending put-request
+   * If the new value is not equal to the previous value and isn't not null, then sending put-request
    * and updating current board.
    *
    * @param newTitle new title of list.
@@ -139,7 +139,7 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
    * Creates a drop zone element and returns it. The drop zone is a div element with specified styles and a 'drop' class.
    * It is used to handle drag-and-drop events for elements that can be dropped onto it.
    *
-   * @returns {HTMLElement} The created drop zone element.
+   * @returns The created drop zone element.
    */
   function createDropZone(): HTMLElement {
     const slot = document.createElement("div");
@@ -196,8 +196,8 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
     const dataDrag = JSON.parse(
       event.dataTransfer!.getData("application/json")
     );
-
     try {
+      // Send a PUT request to the API to edit position of the dragged card
       await api.put("board/" + board_id + "/card/", [
         {
           id: dataDrag.idCard,
@@ -205,13 +205,13 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
           list_id: id,
         },
       ]);
-      toast.success("Card successfully moved");
+      toast.success("Card successfully moved"); // If the editing is successful, show a success message
     } catch (error) {
-      toast.error("Error! Failed to move card");
-       console.error("Error during request:", error); // Log the error to the console for debugging purposes
-      
+      toast.error("Error! Failed to move card");  // If an error occurs during the editing process
+      console.error("Error during request:", error); // Log the error to the console for debugging purposes
     }
 
+    // Array to store the request data for updating card positions in original list
     const requestData: any[] = [];
     for (const card of dataDrag.oldList.slice(dataDrag.position)) {
       requestData.push({
@@ -220,15 +220,19 @@ export default function List({ id, title, cards, updateBoard }: IListProps) {
         list_id: dataDrag.oldIdList,
       });
     }
+
     const fetchData = async () => {
       try {
+        // Send a PUT request to update positions in the original list
         await api.put("board/" + board_id + "/card/", requestData);
-        updateBoard();
+        updateBoard();// Retrieve the updated board data after updating the positions
       } catch (error) {
         console.error("Error during request:", error); // Log the error to the console for debugging purposes
       }
     };
     fetchData();
+
+    // Delete the drop-zone after dragging of card.
     const dropZone = event.target as HTMLElement;
     dropZone?.remove();
   }

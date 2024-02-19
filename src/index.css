@@ -12,6 +12,9 @@
     --color_delete: rgb(103, 0, 0);
     --color_approvement: rgba(13, 141, 50, 0.77);
     --color_creating: rgb(0 255 188 / 36%);
+    --color_first-variant-for-board: rgb(139,218,252);
+    --color_second-variant-for-board: #a4ff90;
+    --color_third-variant-for-board: #ff8f8f;
 }
 
 body{

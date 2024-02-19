@@ -34,6 +34,7 @@ const Board: React.FC<BoardProps> = ({ isModalOpen, dispatch }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Send a GET request to the API to get all data about board
         const response = await api.get<IBoard>("board/" + board_id);
         setBoard(response.data);
 
@@ -73,7 +74,7 @@ const Board: React.FC<BoardProps> = ({ isModalOpen, dispatch }) => {
           }
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error); // If an error occurs during the update process
       }
     };
     fetchData();

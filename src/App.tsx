@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Board from "./pages/Board/components/Board/Board";
 import Home from "./pages/Home/Home";
@@ -9,9 +9,10 @@ function App() {
   return (
     <Router>
       <ToastContainer
-        position="bottom-right" // Позиция уведомлений
-        autoClose={2500} // Время, через которое уведомление автоматически закроется (в миллисекундах)
-        theme={"dark"} // Тема уведомлений
+        /* Configuration for popup notifications */
+        position="bottom-right" // Notification position
+        autoClose={2500} // Time after which the notification will automatically close (in milliseconds)
+        theme={"dark"} // Notification theme
       />
       <Routes>
         <Route path="/my-react-trello" element={<Home />} />

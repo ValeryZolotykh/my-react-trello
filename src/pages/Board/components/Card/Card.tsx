@@ -37,7 +37,7 @@ export default function Card({
    */
   async function deleteCard() {
     try {
-      await api.delete("board/" + board_id + "/card/" + id); // Send a DELETE request to the API to delete the card
+      await api.delete("board/" + board_id + "/card/" + id); // Send a DELETE request to delete the card
       updateBoard(); // Update the board after request
       toast.success("Card successfully deleted"); // If the deletion is successful, show a success message
     } catch (error) {
@@ -214,7 +214,9 @@ export default function Card({
               list_id: idList,
             },
           ]);
+          // Display a success message when the card is successfully moved
           toast.success("Card successfully moved");
+          // Update the position of cards in the original list after moving the card
           updatePositionCardsInTheOriginalList(
             dataDrag.position,
             dataDrag.oldIdList,
@@ -222,12 +224,13 @@ export default function Card({
           );
         }
       } catch (error) {
-        toast.error("Error! Failed to create card");
+        toast.error("Error! Failed to move card"); // Display an error message
         console.error("Error during request:", error); // Log the error to the console for debugging purposes
       }
     };
     fetchData();
 
+    // Delete the drop-zone after dragging of card.
     const dropZone = event.target as HTMLElement;
     dropZone?.remove();
   }

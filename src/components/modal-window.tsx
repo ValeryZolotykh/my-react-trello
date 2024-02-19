@@ -255,14 +255,14 @@ const ModalWindow: React.FC<ModalWindowProps> = ({
               <textarea
                 className="modal-window__edit-textarea"
                 defaultValue={
-                  modalData.description == undefined ||
-                  modalData.description == ""
+                  modalData.description === undefined ||
+                  modalData.description === ""
                     ? ""
                     : modalData.description
                 }
                 placeholder={
-                  modalData.description == undefined ||
-                  modalData.description == ""
+                  modalData.description === undefined ||
+                  modalData.description === ""
                     ? "Enter description"
                     : ""
                 }
