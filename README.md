@@ -23,4 +23,7 @@ Development of a simplified version of Trello using React library. Provide the u
 - Setup, configuration and build of the React project (Create React App, Eslint, Prettier)
 - Demonstration of skills in working with the front-end library React and TypeScript.
 
+## ▪️ Notes
+Unlike the Angular version, some functionality has been added: a modal window with card editing and progress bar.
+
  **This project demonstrates my skills in developing React applications, implementing CRUD operations, ensuring real-time data updates, and integrating with external APIs. Additionally, it showcases advanced features such as Drag-n-Drop for cards, user data validation, modal window implementation for card editing with a description feature, and the inclusion of a progress bar enhances the user experience during the execution of requests.**
