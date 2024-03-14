@@ -52,7 +52,7 @@ const ModalWindow: React.FC<ModalWindowProps> = ({
    */
   const handleCloseModal = () => {
     dispatch(closeModal()); // Dispatch an action to close modal window in the state
-    navigate(`/board/${board_id}`);
+    navigate(`/my-react-trello/board/${board_id}`);
   };
 
   /**
